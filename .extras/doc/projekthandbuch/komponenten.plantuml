@@ -25,14 +25,12 @@ actor GraphQLClient
 node "Nest" {
   [RequestLoggerMiddleware]
 
-  [BuchController]
-  [BuchResolver]
+  [FilmController]
+  [FilmResolver]
 
-  [BuchService]
+  [FilmService]
 
-  [Repository<Buch>]
-
-  [MailService]
+  [Repository<Film>]
 }
 
 
@@ -44,48 +42,34 @@ cloud {
     [nest-keycloak-connect]
 }
 
-cloud {
-    [nodemailer]
-}
-
-database "DB buch" {
-    [Tabelle buch]
-    [Tabelle titel]
-    [Tabelle abbildung]
+database "DB film" {
+    [Tabelle film]
+    [Tabelle skript]
+    [Tabelle schauspieler]
 }
 
 node {
     [Keycloak]
 }
 
-node {
-    [Mailserver]
-}
-
 RESTClient ~~> [RequestLoggerMiddleware]
 GraphQLClient ~~> [RequestLoggerMiddleware]
 
-[RequestLoggerMiddleware] ~~> [BuchController]
-[RequestLoggerMiddleware] ~~> [BuchResolver]
+[RequestLoggerMiddleware] ~~> [FilmController]
+[RequestLoggerMiddleware] ~~> [FilmResolver]
 
-[BuchController] ..> [BuchService]
-[BuchResolver] ..> [BuchService]
-[BuchService] ..> [Repository<Buch>]
+[FilmController] ..> [FilmService]
+[FilmResolver] ..> [FilmService]
+[FilmService] ..> [Repository<Film>]
 
-[Repository<Buch>] ~~> [TypeORM]
-[TypeORM] ~~> [Tabelle buch]
+[Repository<Film>] ~~> [TypeORM]
+[TypeORM] ~~> [Tabelle film]
 [TypeORM] ~~> [Tabelle titel]
 [TypeORM] ~~> [Tabelle abbildung]
 
-[BuchController] ..> [nest-keycloak-connect]
+[FilmController] ..> [nest-keycloak-connect]
 [nest-keycloak-connect] ~~> [Keycloak]
 
-[BuchService] ..> [MailService]
-[MailService] ~~> [nodemailer]
-[nodemailer] ~~> [Mailserver]
-
-[MailService] ~[hidden]~> [nest-keycloak-connect]
-
-footer (c) Jürgen Zimmermann
+footer (c) Luis Kunze
 
 @enduml

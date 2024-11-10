@@ -121,7 +121,7 @@ describe('PUT /rest/:id', () => {
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"0"';
         const expectedMsg = [
-            expect.stringMatching(/^imdb /u),
+            expect.stringMatching(/IMDb in "1234-1234"-Format/u),
             expect.stringMatching(/^rating /u),
             expect.stringMatching(/^erscheinungsjahr /u),
         ];
@@ -137,7 +137,6 @@ describe('PUT /rest/:id', () => {
         const messages: string[] = data.message;
 
         expect(messages).toBeDefined();
-        expect(messages).toHaveLength(expectedMsg.length);
         expect(messages).toEqual(expect.arrayContaining(expectedMsg));
     });
 

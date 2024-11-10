@@ -37,8 +37,6 @@ package typeorm {
 }
 
 package film.entity {
-  class "type FilmArt = 'KINDLE' | 'DRUCKAUSGABE'" as FilmArt
-  hide FilmArt circle
 
   class Film <<entity>> <<@Entity>> {
     @Column() @PrimaryColumn() readonly id: number
@@ -72,6 +70,6 @@ package film.entity {
 
 hide empty members
 
-footer (c) Jürgen Zimmermann
+footer (c) Luis Kunze
 
 @enduml

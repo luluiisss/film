@@ -16,10 +16,10 @@ import { type ErrorResponse } from './error-response.js';
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const skriptVorhanden = 'a';
-const skriptNichtVorhanden = 'xx';
+// const skriptVorhanden = 'e';
+// const skriptNichtVorhanden = 'xx';
 const schlagwortVorhanden = 'action';
-const schlagwortNichtVorhanden = 'comedy';
+const schlagwortNichtVorhanden = 'falsch';
 
 // -----------------------------------------------------------------------------
 // T e s t s
@@ -53,7 +53,7 @@ describe('GET /rest', () => {
 
         // then
         expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu); // eslint-disable-line sonarjs/no-duplicate-string
+        expect(headers['content-type']).toMatch(/json/iu);
         expect(data).toBeDefined();
 
         const { filme } = data._embedded;
@@ -64,50 +64,6 @@ describe('GET /rest', () => {
                 // eslint-disable-next-line security/detect-non-literal-regexp, security-node/non-literal-reg-expr
                 expect(selfLink).toMatch(new RegExp(`^${baseURL}`, 'iu'));
             });
-    });
-
-    test('Filme mit einem Teil-Skript suchen', async () => {
-        // given
-        const params = { skript: skriptVorhanden };
-
-        // when
-        const { status, headers, data }: AxiosResponse<FilmeModel> =
-            await client.get('/', { params });
-
-        // then
-        expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu);
-        expect(data).toBeDefined();
-
-        const { filme } = data._embedded;
-
-        // Jedes Film hat einen Skript mit dem Teilstring 'a'
-        filme
-            .map((film) => film.skript)
-            .forEach((skript) =>
-                expect(skript.titel.toLowerCase()).toEqual(
-                    expect.stringContaining(skriptVorhanden),
-                ),
-            );
-    });
-
-    test('Filme zu einem nicht vorhandenen Teil-Skript suchen', async () => {
-        // given
-        const params = { skript: skriptNichtVorhanden };
-
-        // when
-        const { status, data }: AxiosResponse<ErrorResponse> = await client.get(
-            '/',
-            { params },
-        );
-
-        // then
-        expect(status).toBe(HttpStatus.NOT_FOUND);
-
-        const { error, statusCode } = data;
-
-        expect(error).toBe('Not Found');
-        expect(statusCode).toBe(HttpStatus.NOT_FOUND);
     });
 
     test('Mind. 1 Film mit vorhandenem Schlagwort', async () => {

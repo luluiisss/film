@@ -14,9 +14,9 @@ import { type ErrorResponse } from './error-response.js';
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idVorhanden = '1';
+const idVorhanden = '10';
 const idNichtVorhanden = '999999';
-const idVorhandenETag = '1';
+const idVorhandenETag = '10';
 const idFalsch = 'xy';
 
 // -----------------------------------------------------------------------------

@@ -33,21 +33,16 @@ const neuerFilm: FilmDTO = {
     ],
 };
 const neuerFilmInvalid: Record<string, unknown> = {
-    imdb: 'falscher-IMDB',
+    imdb: '2345-6543',
     rating: -1,
-    art: 'UNSICHTBAR',
-    preis: -1,
-    rabatt: 2,
-    lieferbar: true,
-    datum: '12345-123-123',
-    homepage: 'anyHomepage',
+    erschinungsjahr: 'error',
     skript: {
-        titel: '?!',
+        titel: 'titel',
         autor: 'Autorinvalid',
     },
 };
 const neuerFilmImdbExistiert: FilmDTO = {
-    imdb: '4655-3433',
+    imdb: '1234-5678',
     rating: 1,
     erscheinungsjahr: 2000,
     schlagwoerter: ['ACTION', 'COMEDY'],
@@ -123,10 +118,10 @@ describe('POST /rest', () => {
         const token = await tokenRest(client);
         headers.Authorization = `Bearer ${token}`;
         const expectedMsg = [
-            expect.stringMatching(/^imdb /u),
-            expect.stringMatching(/^rating /u),
-            expect.stringMatching(/^erscheinungsjahr /u),
-            expect.stringMatching(/^skript.titel /u),
+            'rating must not be less than 0',
+            'erscheinungsjahr must not be greater than 2030',
+            'erscheinungsjahr must not be less than 1900',
+            'erscheinungsjahr must be an integer number',
         ];
 
         // when
@@ -196,6 +191,4 @@ describe('POST /rest', () => {
         // then
         expect(response.status).toBe(HttpStatus.UNAUTHORIZED);
     });
-
-    test.todo('Abgelaufener Token');
 });

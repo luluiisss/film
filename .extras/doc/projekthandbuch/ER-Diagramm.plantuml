@@ -23,42 +23,37 @@ hide circle
 ' evtl. Prbleme mit Kraehenfuessen vermeiden
 skinparam linetype ortho
 
-entity "Buch" {
+entity "Film" {
   * id: integer <<generated>>
   --
   * version: integer
-  * isbn: text
+  * imdb: text
   * rating: number
-  * art: text
-  * preis: number
-  * rabatt: number
-  * lieferbar: boolean
-    datum: date
-    homepage: text
+    erscheinungsjahr: number
   * **titel_id**: integer <<FK>>
     schlagwoerter: text
   * erzeugt: timestamp
   * aktualisiert: timestamp
 }
 
-entity "Titel" {
+entity "Skript" {
   * id: integer <<generated>>
   --
   * titel: text
-    untertitel: text
+    autor: text
 }
 
-entity "Abbildung" {
+entity "Schauspieler" {
   * id: integer <<generated>>
   --
-  * beschriftung: text
-    contentType: text
-  * **buch_id**: integer <<FK>>
+  * name: text
+    geburtsdatum: date
+  * **film_id**: integer <<FK>>
 }
 
-Buch ||..|| Titel
-Buch ||..o{ Abbildung
+Film ||..|| Skript
+Film ||..o{ Schauspieler
 
-footer (c) Jürgen Zimmermann
+footer (c) Luis Kunze
 
 @enduml
