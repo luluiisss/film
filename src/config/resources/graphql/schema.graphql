@@ -59,7 +59,7 @@ type Film {
   version: Int!
   imdb: String!
   rating: Int
-  erscheinungsjahr: String
+  erscheinungsjahr: Int
   schlagwoerter: [String]
   # 1:1-Beziehung
   skript: Skript!
@@ -71,7 +71,7 @@ input SuchkriterienInput {
   titel: String
   imdb: String
   rating: Int
-  erscheinungsjahr: String
+  erscheinungsjahr: Int
 }
 
 "Daten zum Skript eines neuen Films"
@@ -90,7 +90,7 @@ input SchauspielerInput {
 input FilmInput {
   imdb: String
   rating: Int
-  erscheinungsjahr: String
+  erscheinungsjahr: Int
   schlagwoerter: [String]
   skript: SkriptInput!
   schauspieler: [SchauspielerInput!]
@@ -106,7 +106,7 @@ input FilmUpdateInput {
   version: Int
   imdb: String
   rating: Int
-  erscheinungsjahr: String
+  erscheinungsjahr: Int
   schlagwoerter: [String]
 }
 
