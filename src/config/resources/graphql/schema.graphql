@@ -1,0 +1,122 @@
+# Copyright (C) 2021 - present Juergen Zimmermann, Hochschule Karlsruhe
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# siehe app.module.ts
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"Funktionen, um Bücherdaten zu lesen"
+type Query {
+  filme(suchkriterien: SuchkriterienInput): [Film!]
+
+  film(id: ID!): Film
+}
+
+"Funktionen, um Bücher neu anzulegen, zu aktualisieren oder zu löschen"
+type Mutation {
+  create(input: FilmInput!): CreatePayload
+
+  update(input: FilmUpdateInput!): UpdatePayload
+
+  delete(id: ID!): Boolean
+
+  # Mutation, wenn z.B. der Login-Zeitpunkt im IDM-System gespeichert wird
+  token(username: String!, password: String!): TokenResult
+  refresh(refresh_token: String!): TokenResult
+}
+
+"Daten zum Skript eines Films"
+type Skript {
+  titel: String!
+  autor: String
+}
+
+"Daten zum Skript eines Films"
+type Schauspieler {
+  name: String!
+  geburtsdatum: String
+}
+
+"Datenschema zu einem Film, das gelesen wird"
+type Film {
+  # ID ist bei Apollo ein String
+  id: Int!
+  version: Int!
+  imdb: String!
+  rating: Int
+  erscheinungsjahr: String
+  schlagwoerter: [String]
+  # 1:1-Beziehung
+  skript: Skript!
+  # field mit @ResolveField
+}
+
+"Suchkriterien für Bücher"
+input SuchkriterienInput {
+  titel: String
+  imdb: String
+  rating: Int
+  erscheinungsjahr: String
+}
+
+"Daten zum Skript eines neuen Films"
+input SkriptInput {
+  titel: String!
+  autor: String
+}
+
+"Daten zu den Schauspieler eines Films"
+input SchauspielerInput {
+  name: String!
+  geburtsdatum: String!
+}
+
+"Daten für einen neuen Film"
+input FilmInput {
+  imdb: String
+  rating: Int
+  erscheinungsjahr: String
+  schlagwoerter: [String]
+  skript: SkriptInput!
+  schauspieler: [SchauspielerInput!]
+}
+
+type CreatePayload {
+  id: Int
+}
+
+"Daten für ein zu ändernden Film"
+input FilmUpdateInput {
+  id: ID
+  version: Int
+  imdb: String
+  rating: Int
+  erscheinungsjahr: String
+  schlagwoerter: [String]
+}
+
+type UpdatePayload {
+  version: Int
+}
+
+type TokenResult {
+  access_token: String!
+  expires_in: Int!
+  refresh_token: String!
+  refresh_expires_in: Int!
+}
